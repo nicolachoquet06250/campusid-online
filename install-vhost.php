@@ -2,11 +2,12 @@
 
 $enable_systems = [
 	'win' => function($default_messages) {
-		$vhosts_path = 'C:\xampp\apache\conf\extra\httpd-vhosts.conf';
+		$vhosts_path = 'C:\wamp64\bin\apache\apache2.4.35\conf\extra\httpd-vhosts.conf';
 		$hosts_path = 'C:\Windows\System32\drivers\etc\hosts';
 
 		$vhosts = file_get_contents($vhosts_path);
-		if(strstr($vhosts, 'campusid.local')) {
+		var_dump(strstr($vhosts, 'campusid.local'));
+		if(!strstr($vhosts, 'campusid.local')) {
 			$vhosts .= '
 		<VirtualHost *:80>
 				#nom de domaine
@@ -125,7 +126,7 @@ $os = $argv[1];
 
 try {
 	if(in_array($os, array_keys($enable_systems))) {
-		$valid = $enable_systems[$os]();
+		$valid = $enable_systems[$os]($default_messages);
 		echo $valid."\n";
 	}
 	else {
