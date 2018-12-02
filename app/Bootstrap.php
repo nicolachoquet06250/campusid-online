@@ -11,7 +11,6 @@ use Dframe\Session;
 use Dframe\Messages;
 use Dframe\Token;
 use Dframe\Database\Database;
-use \PDO;
 
 require_once dirname(__DIR__) . '/web/config.php';
 
@@ -27,6 +26,31 @@ class Bootstrap
 		'example' => [
 			'class' => \Model\ExampleModel::class,
 			'source' => __DIR__.'/Model/Example.php',
+		],
+	], $services = [
+		'database' => [
+			'class' => Database::class,
+			'param' => 'dbConfig',
+			'param_is' => 'var',
+			'value' => null,
+		],
+		'session' => [
+			'class' => Session::class,
+			'param' => 'session_name',
+			'param_is' => "string",
+			'value' => null,
+		],
+		'message' => [
+			'class' => Messages::class,
+			'param' => 'session',
+			'param_is' => 'prop',
+			'value' => null,
+		],
+		'token' => [
+			'class' => Token::class,
+			'param' => 'session',
+			'param_is' => 'prop',
+			'value' => null,
 		],
 	];
 
@@ -53,7 +77,7 @@ class Bootstrap
 				];
 
                 $this->db = new Database($dbConfig);
-                $this->db->setErrorLog(setErrorLog); // Debugowanie
+				$this->db->setErrorLog(setErrorLog); // Debugowanie
             }
 
         } catch (DBException $e) {
@@ -64,6 +88,17 @@ class Bootstrap
         $this->session = new Session('session_name'); // Best to set projectName
         $this->msg = new Messages($this->session);     // Default notify class
         $this->token = new Token($this->session);     // Default csrf token
+
+		foreach ($this->services as $service_name => $service_detail) {
+			if(is_null($service_detail['value'])) {
+				$param = null;
+				if($service_detail['param_is'] === 'var') $param = ${$service_detail['param']};
+				elseif ($service_detail['param_is'] === 'prop') $param = $this->{$service_detail['param']};
+				else $param = $service_detail['param'];
+				$this->services[$service_name]['value'] = new $service_detail['class']($param);
+			}
+		}
+		$this->services['database']['value']->setErrorLog(setErrorLog); // Debugowanie
 
         return $this;
     }
@@ -100,6 +135,13 @@ class Bootstrap
 				return new $model_class;
 			}
 			else throw new Exception('Model '.$model.' not found !');
+		}
+		elseif (strstr($name, 'get_service_')) {
+			$service = str_replace('get_service_', '', $name);
+			if(isset($this->services[$service])) {
+				return $this->services[$service]['value'];
+			}
+			else throw new Exception('Service '.$service.' not found !');
 		}
 	}
 

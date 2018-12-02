@@ -1,6 +1,8 @@
 <?php
 namespace View;
 
+use Dframe\Messages;
+
 class IndexView extends \View\View
 {
     public function init()
@@ -10,17 +12,21 @@ class IndexView extends \View\View
             $this->assign('router', $this->router);
         }
 
+        /** @var Messages $msg */
+        $msg = $this->baseClass->get_service_message();
+
+
         /* Domyślne alerty */
-        if ($this->baseClass->get_msg()->hasMessages('error')) {
-            $this->assign('msgError', $this->baseClass->get_msg()->display('error'));
+        if ($msg->hasMessages('error')) {
+            $this->assign('msgError', $msg->display('error'));
         }
         
-        if ($this->baseClass->get_msg()->hasMessages('success')) {
-            $this->assign('msgSuccess', $this->baseClass->get_msg()->display('success'));
+        if ($msg->hasMessages('success')) {
+            $this->assign('msgSuccess', $msg->display('success'));
         }
         
-        if ($this->baseClass->get_msg()->hasMessages('warning')) {
-            $this->assign('msgWarning', $this->baseClass->get_msg()->display('warning'));
+        if ($msg->hasMessages('warning')) {
+            $this->assign('msgWarning', $msg->display('warning'));
         }
         
         if ($this->baseClass->get_msg()->hasMessages('info')) {

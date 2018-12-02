@@ -9,6 +9,8 @@
 
 namespace Model;
 
+use Dframe\Database\Database;
+
 /**
  * Here is a description of what this file is for.
  *
@@ -19,7 +21,9 @@ class ExampleModel extends Model
 {
 	public function example()
     {
-		$users = $this->loader->get_db()->select('account', '*', [
+		/** @var Database $db */
+    	$db = $this->loader->get_service_database();
+		$users = $db->select('account', '*', [
 			'id_account' => 1
 		])->results();
 
