@@ -1,7 +1,6 @@
 app/View/templates_c/*
 app/View/cache/*
 app/View/logs/*
-web/assets/*
 vendor
 
 .project

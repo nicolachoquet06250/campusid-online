@@ -9,6 +9,7 @@
 namespace Controller;
 
 use Dframe\Config;
+use Dframe\Router;
 use Dframe\Router\Response;
 use Model\ExampleModel;
 
@@ -18,54 +19,48 @@ use Model\ExampleModel;
  * @author First Name <adres@email>
  */
 
-class PageController extends Controller
-{
-	public function error()
-    {
+class PageController extends Controller {
+	/** @var Router $router */
+	public $router;
+	public function error() {
         $view = $this->loadView('Index');
+		$http = $this->loader->get_util_http();
 
         $errorsTypes = ['404'];
-        if (!isset($_GET['type']) OR !in_array($_GET['type'], $errorsTypes)) {
+        if (!is_null($http->get('type')) OR !in_array($http->get('type'), $errorsTypes)) {
             return $this->router->redirect(':task/:action?task=page&action=index');
         }
 
-        return Response::create($view->fetch('errors/'.$_GET['type']))->status($_GET['type']);
+        return Response::create($view->fetch('errors/'.$http->get('type')))->status($http->get('type'));
     }
 
-	public function index()
-    {
+	public function index() {
         $view = $this->loadView('Index');
         $view->assign('contents', 'Example assign');
-		/**
-		 * @var ExampleModel $example_model
-		 */
+		/** @var ExampleModel $example_model */
         $example_model = $this->loader->get_model_example();
         $users = $example_model->example();
 
         return $view->render(
         	[
-        		[
-        			'status' => 'success',
-				],
+        		'status' => 'success',
 				$users['data'],
 			], 'json'
 		);
     }
 
 
-    public function responseExample()
-    {
+    public function responseExample() {
         $view = $this->loadView('Index');
         $view->assign('contents', 'Example assign');
 
         return Response::create($view->fetch('index'));
     }
 
-	public function json()
-    {
+	public function json() {
         return Response::renderJSON(
         	[
-        		'return' => '1'
+        		'return' => 1
 			]
 		);
     }
@@ -75,22 +70,21 @@ class PageController extends Controller
 	 *
 	 * @param  string $method
 	 * @param $test
-	 * @return Response
+	 * @return Response|object
 	 */
-
-    public function __call($method, $test)
-    {
+    public function __call($method, $test) {
 
         $smartyConfig = Config::load('view/smarty');
         $view = $this->loadView('Index');
+		$http = $this->loader->get_util_http();
 
-        $patchController = $smartyConfig->get('setTemplateDir', APP_DIR.'View/templates').'/page/'.htmlspecialchars($_GET['action']).$smartyConfig->get('fileExtension', '.html.php');
+        $patchController = $smartyConfig->get('setTemplateDir', APP_DIR.'View/templates').'/page/'.htmlspecialchars($http->get('action')).$smartyConfig->get('fileExtension', '.html.php');
 
         if (!file_exists($patchController)) {
             return $this->router->redirect(':task/:action?task=page&action=index');
         }
 
-        return Response::create($view->fetch('page/' . htmlspecialchars($_GET['action'])));
+        return Response::create($view->fetch('page/' . htmlspecialchars($http->get('action'))));
 
     }
 

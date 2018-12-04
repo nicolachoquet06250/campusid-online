@@ -13,7 +13,7 @@ use Dframe\Token;
 use Dframe\Database\Database;
 
 require_once __DIR__.'/ModuleLoader.php';
-require_once dirname(__DIR__) . '/web/config.php';
+require_once dirname(__DIR__).'/web/config.php';
 
 /**
  * Here is a description of what this file is for.

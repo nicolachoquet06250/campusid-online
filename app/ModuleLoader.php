@@ -8,18 +8,46 @@ use Dframe\Token;
 use Model\ExampleModel;
 use modules\home\mvc\controllers\HomeController;
 use modules\home\mvc\models\HomeModel;
+use tools\http;
+
+require_once __DIR__.'/../web/Loader.php';
 
 /**
  * Class ModuleLoader
  *
  * @method ExampleModel get_model_example()
  * @method HomeModel get_model_home()
+ *
+ * @method PageController get_controller_page()
+ * @method HomeController get_controller_home()
+ *
  * @method Database get_service_database()
  * @method Session get_service_session()
  * @method Messages get_service_message()
  * @method Token get_service_token()
+ *
+ * @method http get_util_http()
  */
-class ModuleLoader {
+class ModuleLoader extends Loader {
+	protected $charged = [
+		'models' => [
+			'getter' => 'get_model_',
+			'callback' => 'load_model'
+		],
+		'controllers' => [
+			'getter' => 'get_controller_',
+			'callback' => 'load_controller'
+		],
+		'services' => [
+			'getter' => 'get_service_',
+			'callback' => 'load_service'
+		],
+		'tools' => [
+			'getter' => 'get_util_',
+			'callback' => 'load_util'
+		],
+	];
+
 	protected $models = [
 		'example' => [
 			'class' => ExampleModel::class,
@@ -64,6 +92,12 @@ class ModuleLoader {
 			'param' => 'session',
 			'param_is' => 'prop',
 			'value' => null,
+		],
+	];
+	protected $tools = [
+		'http' => [
+			'class' => http::class,
+			'source' => __DIR__.'/../tools/http.php',
 		],
 	];
 
@@ -140,7 +174,7 @@ class ModuleLoader {
 			require_once $ctrl_source;
 			return new $ctrl_class;
 		}
-		else throw new Exception('Model '.$controller.' not found !');
+		else throw new Exception('Controller '.$controller.' not found !');
 	}
 
 	/**
@@ -158,15 +192,18 @@ class ModuleLoader {
 
 	/**
 	 * @param $name
-	 * @param $arguments
 	 * @return mixed
 	 * @throws Exception
 	 */
-	public function __call($name, $arguments) {
-		if(strstr($name, 'get_model_')) return $this->load_model($name);
-		elseif(strstr($name, 'get_controller_')) return $this->load_controller($name);
-		elseif (strstr($name, 'get_service_')) return $this->load_service($name);
-		return null;
+	protected function load_util($name) {
+		$util = str_replace('get_util_', '', $name);
+		if(isset($this->tools[$util])) {
+			$util_class = $this->tools[$util]['class'];
+			$util_source = $this->tools[$util]['source'];
+			require_once $util_source;
+			return new $util_class;
+		}
+		else throw new Exception('Tool '.$util.' not found !');
 	}
 
 	protected function merge_array($prop, $array) {

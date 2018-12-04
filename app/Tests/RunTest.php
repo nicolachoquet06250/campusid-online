@@ -9,6 +9,8 @@
 
 namespace Tests;
 
+use Dframe\Loader;
+
 ini_set('session.use_cookies', 0);
 
 session_start();
@@ -18,7 +20,10 @@ if (!class_exists('\PHPUnit\Framework\TestCase') and class_exists('\PHPUnit_Fram
     class_alias('\PHPUnit_Framework_TestCase', '\PHPUnit\Framework\TestCase');
 }
 
-$autoloader = include dirname(__DIR__) . '../vendor/autoload.php';
+$autoloader = include dirname(__DIR__) . '/../vendor/autoload.php';
+require_once __DIR__.'/../../web/mvc/controller/Controller.php';
+require_once __DIR__.'/../../web/mvc/model/Model.php';
+require_once __DIR__.'/../../web/mvc/view/View.php';
 require_once dirname(__FILE__) . '/../Bootstrap.php';
 require_once dirname(__FILE__) . '/../../web/config.php';
 
@@ -28,20 +33,17 @@ require_once dirname(__FILE__) . '/../../web/config.php';
  * @author Sławek Kaleta <slaszka@gmail.com>
  */
 
-class RunTest extends \PHPUnit\Framework\TestCase
-{
-
-
-    public function testCreateController()
-    {
+class RunTest extends \PHPUnit\Framework\TestCase {
+	/**
+	 * @throws Loader\Exceptions\LoaderException
+	 */
+	public function testCreateController() {
         $bootstrap = new \Bootstrap();
         $bootstrap->router = new \Dframe\Router();
 
-        $run = new \Dframe\Loader($bootstrap);
+        $run = new Loader($bootstrap);
         $page = $run->loadController('Page')->returnController;
 
         $this->assertEquals('{"return":"1"}', $page->json()->getBody());
-
     }
-
 }
