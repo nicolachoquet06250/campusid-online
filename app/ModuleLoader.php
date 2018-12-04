@@ -168,4 +168,8 @@ class ModuleLoader {
 		elseif (strstr($name, 'get_service_')) return $this->load_service($name);
 		return null;
 	}
+
+	protected function merge_array($prop, $array) {
+		$this->$prop = array_merge($this->$prop, $array);
+	}
 }
