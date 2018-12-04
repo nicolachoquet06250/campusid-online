@@ -1,0 +1,23 @@
+<?php
+
+namespace modules\home\mvc\models;
+
+
+use Model\Model;
+
+class HomeModel extends Model {
+	public function example() {
+		/** @var Database $db */
+		$db = $this->loader->get_service_database();
+		$users = $db->select('account', '*', [
+			'id_account' => 1
+		])->results();
+
+		return $this->methodResult(
+			true,
+			[
+				'data' => $users
+			]
+		);
+	}
+}

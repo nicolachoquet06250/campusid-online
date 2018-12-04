@@ -18,7 +18,7 @@ if (!class_exists('\PHPUnit\Framework\TestCase') and class_exists('\PHPUnit_Fram
     class_alias('\PHPUnit_Framework_TestCase', '\PHPUnit\Framework\TestCase');
 }
 
-$autoloader = include dirname(__DIR__) . '../../vendor/autoload.php';
+$autoloader = include dirname(__DIR__) . '../vendor/autoload.php';
 require_once dirname(__FILE__) . '/../Bootstrap.php';
 require_once dirname(__FILE__) . '/../../web/config.php';
 
