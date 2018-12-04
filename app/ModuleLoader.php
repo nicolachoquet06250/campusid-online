@@ -1,25 +1,20 @@
 <?php
 
-use Controller\PageController;
+use Dframe\custom\Loader;
 use Dframe\Database\Database;
 use Dframe\Messages;
 use Dframe\Session;
 use Dframe\Token;
-use Model\ExampleModel;
-use modules\home\mvc\controllers\HomeController;
-use modules\home\mvc\models\HomeModel;
 use tools\http;
 
-require_once __DIR__.'/../web/Loader.php';
+require_once __DIR__.'/../core/Loader.php';
 
 /**
  * Class ModuleLoader
  *
- * @method ExampleModel get_model_example()
- * @method HomeModel get_model_home()
+ * @method \modules\home\mvc\models\Home get_model_home()
  *
- * @method PageController get_controller_page()
- * @method HomeController get_controller_home()
+ * @method \modules\home\mvc\controllers\Home get_controller_home()
  *
  * @method Database get_service_database()
  * @method Session get_service_session()
@@ -49,22 +44,14 @@ class ModuleLoader extends Loader {
 	];
 
 	protected $models = [
-		'example' => [
-			'class' => ExampleModel::class,
-			'source' => __DIR__.'/Model/Example.php',
-		],
 		'home' => [
-			'class' => HomeModel::class,
+			'class' => \modules\home\mvc\models\Home::class,
 			'source' => __DIR__.'/modules/home/mvc/models/Home.php',
 		],
 	];
 	protected $controllers = [
-		'page' => [
-			'class' => PageController::class,
-			'source' => __DIR__.'/Controller/Page.php',
-		],
 		'home' => [
-			'class' => HomeController::class,
+			'class' => \modules\home\mvc\controllers\Home::class,
 			'source' => __DIR__.'/modules/home/mvc/controllers/Home.php',
 		],
 	];
@@ -101,6 +88,11 @@ class ModuleLoader extends Loader {
 		],
 	];
 
+	/**
+	 * ModuleLoader constructor.
+	 *
+	 * @throws \Dframe\Loader\Exceptions\LoaderException
+	 */
 	public function __construct() {
 		$this->load_services();
 	}

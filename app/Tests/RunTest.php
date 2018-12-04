@@ -9,7 +9,8 @@
 
 namespace Tests;
 
-use Dframe\Loader;
+
+use Loader;
 
 ini_set('session.use_cookies', 0);
 
@@ -21,6 +22,7 @@ if (!class_exists('\PHPUnit\Framework\TestCase') and class_exists('\PHPUnit_Fram
 }
 
 $autoloader = include dirname(__DIR__) . '/../vendor/autoload.php';
+require_once __DIR__.'/../../core/autoload.php';
 require_once __DIR__.'/../../web/mvc/controller/Controller.php';
 require_once __DIR__.'/../../web/mvc/model/Model.php';
 require_once __DIR__.'/../../web/mvc/view/View.php';
@@ -35,7 +37,7 @@ require_once dirname(__FILE__) . '/../../web/config.php';
 
 class RunTest extends \PHPUnit\Framework\TestCase {
 	/**
-	 * @throws Loader\Exceptions\LoaderException
+	 * @throws \Dframe\Loader\Exceptions\LoaderException
 	 */
 	public function testCreateController() {
         $bootstrap = new \Bootstrap();

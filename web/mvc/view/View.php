@@ -19,7 +19,7 @@ abstract class View extends \Dframe\View
 
     public function __construct($baseClass)
     {
-        $this->setView(new \Dframe\View\SmartyView());
+        $this->setView(new \Dframe\custom\View\SmartyView());
         parent::__construct($baseClass);
     }
 
