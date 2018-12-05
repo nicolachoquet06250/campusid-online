@@ -8,6 +8,7 @@
  */
 
 namespace Dframe\custom;
+require_once __DIR__.'/Loader.php';
 
 /**
  * Model Class.
