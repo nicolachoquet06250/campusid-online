@@ -18,18 +18,18 @@ class Router extends \Dframe\Router {
 		if (is_null($controller) and is_null($action)) {
 			$this->parseGets();
 			$controller = $_GET['task'];
-			$action = $_GET['action'];
+			$action     = $_GET['action'];
 		}
 
-		$arg = $this->parseArgs;
-		$bootstrap = new \Bootstrap();
+		$arg               = $this->parseArgs;
+		$bootstrap         = new \Bootstrap();
 		$bootstrap->router = $this;
-		$loader = new Loader($bootstrap);
-		$loadController = $loader->loadController($controller); // Loading Controller class
+		$loader            = new Loader($bootstrap);
+		$loadController    = $loader->loadController($controller); // Loading Controller class
 
 		if (isset($loadController->returnController)) {
 			$controller = $loadController->returnController;
-			$response = [];
+			$response   = [];
 
 			if (method_exists($controller, 'start')) {
 				$response[] = 'start';
@@ -79,8 +79,8 @@ class Router extends \Dframe\Router {
 		}
 
 		$sExpressionUrl = $sUrl;
-		$sUrl = $this->requestPrefix . $this->domain . '/' . $path;
-		$sUrl .= $sExpressionUrl;
+		$sUrl           = $this->requestPrefix.$this->domain.'/'.$path;
+		$sUrl           .= $sExpressionUrl;
 
 		unset($this->subdomain);
 		$this->domain = HTTP_HOST;

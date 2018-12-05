@@ -25,65 +25,65 @@ require_once __DIR__.'/../core/Loader.php';
  */
 class ModuleLoader extends Loader {
 	protected $charged = [
-		'models' => [
-			'getter' => 'get_model_',
+		'models'      => [
+			'getter'   => 'get_model_',
 			'callback' => 'load_model'
 		],
 		'controllers' => [
-			'getter' => 'get_controller_',
+			'getter'   => 'get_controller_',
 			'callback' => 'load_controller'
 		],
-		'services' => [
-			'getter' => 'get_service_',
+		'services'    => [
+			'getter'   => 'get_service_',
 			'callback' => 'load_service'
 		],
-		'tools' => [
-			'getter' => 'get_util_',
+		'tools'       => [
+			'getter'   => 'get_util_',
 			'callback' => 'load_util'
 		],
 	];
 
-	protected $models = [
+	protected $models      = [
 		'home' => [
-			'class' => \modules\home\mvc\models\Home::class,
+			'class'  => \modules\home\mvc\models\Home::class,
 			'source' => __DIR__.'/modules/home/mvc/models/Home.php',
 		],
 	];
 	protected $controllers = [
 		'home' => [
-			'class' => \modules\home\mvc\controllers\Home::class,
+			'class'  => \modules\home\mvc\controllers\Home::class,
 			'source' => __DIR__.'/modules/home/mvc/controllers/Home.php',
 		],
 	];
-	protected $services = [
+	protected $services    = [
 		'database' => [
-			'class' => Database::class,
-			'param' => 'dbConfig',
+			'class'    => Database::class,
+			'param'    => 'dbConfig',
 			'param_is' => 'var',
-			'value' => null,
+			'value'    => null,
 		],
-		'session' => [
-			'class' => Session::class,
-			'param' => 'session_name',
+		'session'  => [
+			'class'    => Session::class,
+			'param'    => 'session_name',
 			'param_is' => "string",
-			'value' => null,
+			'value'    => null,
 		],
-		'message' => [
-			'class' => Messages::class,
-			'param' => 'session',
+		'message'  => [
+			'class'    => Messages::class,
+			'param'    => 'session',
 			'param_is' => 'prop',
-			'value' => null,
+			'value'    => null,
 		],
-		'token' => [
-			'class' => Token::class,
-			'param' => 'session',
+		'token'    => [
+			'class'    => Token::class,
+			'param'    => 'session',
 			'param_is' => 'prop',
-			'value' => null,
+			'value'    => null,
 		],
 	];
-	protected $tools = [
+	protected $tools       = [
 		'http' => [
-			'class' => http::class,
+			'class'  => http::class,
 			'source' => __DIR__.'/../tools/http.php',
 		],
 	];
@@ -101,20 +101,20 @@ class ModuleLoader extends Loader {
 		try {
 			if (!empty(DB_HOST)) {
 				$dbConfig = array(
-					'host' => DB_HOST,
-					'dbname' => DB_DATABASE,
+					'host'     => DB_HOST,
+					'dbname'   => DB_DATABASE,
 					'username' => DB_USER,
 					'password' => DB_PASS,
 				);
 				// Debug Config
 				$config = [
-					'logDir' => APP_DIR . 'View/logs/',
+					'logDir'     => APP_DIR.'View/logs/',
 					'attributes' => [
 						PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
 						//PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,  		// Set pdo error mode silent
-						PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, 		// If you want to Show Class exceptions on Screen, Uncomment below code
-						PDO::ATTR_EMULATE_PREPARES => true, 				// Use this setting to force PDO to either always emulate prepared statements (if TRUE), or to try to use native prepared statements (if FALSE).
-						PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC 	// Set default pdo fetch mode as fetch assoc
+						PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,        // If you want to Show Class exceptions on Screen, Uncomment below code
+						PDO::ATTR_EMULATE_PREPARES   => true,                // Use this setting to force PDO to either always emulate prepared statements (if TRUE), or to try to use native prepared statements (if FALSE).
+						PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC    // Set default pdo fetch mode as fetch assoc
 					]
 				];
 			}
@@ -130,9 +130,8 @@ class ModuleLoader extends Loader {
 				}
 			}
 			$this->services['database']['value']->setErrorLog(setErrorLog);
-		}
-		catch (DBException $e) {
-			echo 'The connect can not create: ' . $e->getMessage();
+		} catch (DBException $e) {
+			echo 'The connect can not create: '.$e->getMessage();
 			exit();
 		}
 	}
@@ -144,13 +143,12 @@ class ModuleLoader extends Loader {
 	 */
 	protected function load_model($name) {
 		$model = str_replace('get_model_', '', $name);
-		if(isset($this->models[$model])) {
-			$model_class = $this->models[$model]['class'];
+		if (isset($this->models[$model])) {
+			$model_class  = $this->models[$model]['class'];
 			$model_source = $this->models[$model]['source'];
 			require_once $model_source;
 			return new $model_class;
-		}
-		else throw new Exception('Model '.$model.' not found !');
+		} else throw new Exception('Model '.$model.' not found !');
 	}
 
 	/**
@@ -160,13 +158,12 @@ class ModuleLoader extends Loader {
 	 */
 	protected function load_controller($name) {
 		$controller = str_replace('get_controller_', '', $name);
-		if(isset($this->controllers[$controller])) {
-			$ctrl_class = $this->controllers[$controller]['class'];
+		if (isset($this->controllers[$controller])) {
+			$ctrl_class  = $this->controllers[$controller]['class'];
 			$ctrl_source = $this->controllers[$controller]['source'];
 			require_once $ctrl_source;
 			return new $ctrl_class;
-		}
-		else throw new Exception('Controller '.$controller.' not found !');
+		} else throw new Exception('Controller '.$controller.' not found !');
 	}
 
 	/**
@@ -176,10 +173,9 @@ class ModuleLoader extends Loader {
 	 */
 	protected function load_service($name) {
 		$service = str_replace('get_service_', '', $name);
-		if(isset($this->services[$service])) {
+		if (isset($this->services[$service])) {
 			return $this->services[$service]['value'];
-		}
-		else throw new Exception('Service '.$service.' not found !');
+		} else throw new Exception('Service '.$service.' not found !');
 	}
 
 	/**
@@ -189,13 +185,12 @@ class ModuleLoader extends Loader {
 	 */
 	protected function load_util($name) {
 		$util = str_replace('get_util_', '', $name);
-		if(isset($this->tools[$util])) {
-			$util_class = $this->tools[$util]['class'];
+		if (isset($this->tools[$util])) {
+			$util_class  = $this->tools[$util]['class'];
 			$util_source = $this->tools[$util]['source'];
 			require_once $util_source;
 			return new $util_class;
-		}
-		else throw new Exception('Tool '.$util.' not found !');
+		} else throw new Exception('Tool '.$util.' not found !');
 	}
 
 	protected function merge_array($prop, $array) {

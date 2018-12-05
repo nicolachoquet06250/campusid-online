@@ -11,6 +11,7 @@ use Dframe\custom\View;
 class Home extends Controller {
 	/** @var Router $router */
 	public $router;
+
 	public function error() {
 		$view = $this->loadView('Index');
 		$http = $this->loader->get_util_http();
@@ -34,7 +35,7 @@ class Home extends Controller {
 		$view->assign('contents', 'Example assign');
 		/** @var \modules\home\mvc\models\Home $example_model */
 		$example_model = $this->loader->get_model_home();
-		$users = $example_model->example();
+		$users         = $example_model->example();
 		return $view->renderJSON(
 			[
 				'status' => 'success',
@@ -68,8 +69,8 @@ class Home extends Controller {
 	public function __call($method, $test) {
 
 		$smartyConfig = Config::load('view/smarty');
-		$view = $this->loadView('Index');
-		$http = $this->loader->get_util_http();
+		$view         = $this->loadView('Index');
+		$http         = $this->loader->get_util_http();
 
 		$patchController = APP_DIR.'modules/home/mvc/views/tpl'.'/'.htmlspecialchars($http->get('action')).$smartyConfig->get('fileExtension', '.html.php');
 
@@ -77,7 +78,6 @@ class Home extends Controller {
 			return $this->router->redirect(':task/:action?task=page&action=index');
 		}
 
-		return Response::create($view->fetch('home/' . htmlspecialchars($http->get('action'))));
-
+		return Response::create($view->fetch('home/'.htmlspecialchars($http->get('action'))));
 	}
 }

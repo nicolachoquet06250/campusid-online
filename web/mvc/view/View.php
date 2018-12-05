@@ -13,14 +13,17 @@ namespace View;
  *
  * @author First Name <adres@email>
  */
+abstract class View extends \Dframe\View {
 
-abstract class View extends \Dframe\View
-{
-
-    public function __construct($baseClass)
-    {
-        $this->setView(new \Dframe\custom\View\SmartyView());
-        parent::__construct($baseClass);
-    }
+	/**
+	 * View constructor.
+	 *
+	 * @param $baseClass
+	 * @throws \Dframe\Loader\Exceptions\LoaderException
+	 */
+	public function __construct($baseClass) {
+		$this->setView(new \Dframe\custom\View\SmartyView());
+		parent::__construct($baseClass);
+	}
 
 }

@@ -14,9 +14,7 @@ namespace Model;
  *
  * @abstract
  */
-
-abstract class Model extends \Dframe\Model
-{
+abstract class Model extends \Dframe\Model {
 	/**
 	 * @var \Bootstrap $loader
 	 */
@@ -27,8 +25,7 @@ abstract class Model extends \Dframe\Model
 		$this->loader = new \Bootstrap();
 	}
 
-	public function __construct($bootstrap = null)
-	{
+	public function __construct($bootstrap = null) {
 		parent::__construct($bootstrap);
 		$this->init();
 	}

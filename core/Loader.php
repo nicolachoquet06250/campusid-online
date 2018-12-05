@@ -1,6 +1,7 @@
 <?php
 
 namespace Dframe\custom;
+
 require_once __DIR__.'/Core.php';
 
 use Dframe\Config;
@@ -10,8 +11,8 @@ use Exception;
 class Loader extends Core {
 	protected $charged = [];
 
-	public $baseClass;
-	public $router;
+	public  $baseClass;
+	public  $router;
 	private $namespaceSeparator = '\\';
 
 	/**
@@ -45,8 +46,7 @@ class Loader extends Core {
 	 *
 	 * @return object
 	 */
-	public function loadModel($name)
-	{
+	public function loadModel($name) {
 		return $this->loadObject($name, 'Model');
 	}
 
@@ -75,22 +75,22 @@ class Loader extends Core {
 		}
 
 		$pathFile = pathFile($name);
-		$folder = $pathFile[0];
-		$name = $pathFile[1];
+		$folder   = $pathFile[0];
+		$name     = $pathFile[1];
 
-		$n = str_replace($type, '', $name);
-		$path = str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, APP_DIR . $type . '/' . $folder . $n . '.php');
+		$n    = str_replace($type, '', $name);
+		$path = str_replace($this->namespaceSeparator, DIRECTORY_SEPARATOR, APP_DIR.$type.'/'.$folder.$n.'.php');
 
 		try {
 			if (!$this->isCamelCaps($name, true)) {
 				if (!defined('CODING_STYLE') or (defined('CODING_STYLE') and CODING_STYLE == true)) {
-					throw new LoaderException('Camel Sensitive is on. Can not use ' . $type . ' ' . $name . ' try to use StudlyCaps or CamelCase');
+					throw new LoaderException('Camel Sensitive is on. Can not use '.$type.' '.$name.' try to use StudlyCaps or CamelCase');
 				}
 			}
 
-			$name = !empty($folder) ? $this->namespaceSeparator . $type . $this->namespaceSeparator . str_replace([$this->namespaceSeparator, '/'], $this->namespaceSeparator, $folder) . $name . $type : $this->namespaceSeparator . $type . $this->namespaceSeparator . $name . $type;
+			$name = !empty($folder) ? $this->namespaceSeparator.$type.$this->namespaceSeparator.str_replace([$this->namespaceSeparator, '/'], $this->namespaceSeparator, $folder).$name.$type : $this->namespaceSeparator.$type.$this->namespaceSeparator.$name.$type;
 			if (!is_file($path)) {
-				throw new LoaderException('Can not open ' . $type . ' ' . $name . ' in: ' . $path);
+				throw new LoaderException('Can not open '.$type.' '.$name.' in: '.$path);
 			}
 
 			include_once $path;
@@ -102,17 +102,17 @@ class Loader extends Core {
 			$msg = null;
 			if (ini_get('display_errors') == 'on') {
 				$msg .= '<pre>';
-				$msg .= 'Message: <b>' . $e->getMessage() . '</b><br><br>';
+				$msg .= 'Message: <b>'.$e->getMessage().'</b><br><br>';
 
-				$msg .= 'Accept: ' . $_SERVER['HTTP_ACCEPT'] . '<br>';
+				$msg .= 'Accept: '.$_SERVER['HTTP_ACCEPT'].'<br>';
 				if (isset($_SERVER['HTTP_REFERER'])) {
-					$msg .= 'Referer: ' . $_SERVER['HTTP_REFERER'] . '<br><br>';
+					$msg .= 'Referer: '.$_SERVER['HTTP_REFERER'].'<br><br>';
 				}
 
-				$msg .= 'Request Method: ' . $_SERVER['REQUEST_METHOD'] . '<br><br>';
-				$msg .= 'Current file Path: <b>' . $this->router->currentPath() . '</b><br>';
-				$msg .= 'File Exception: ' . $e->getFile() . ':' . $e->getLine() . '<br><br>';
-				$msg .= 'Trace: <br>' . $e->getTraceAsString() . '<br>';
+				$msg .= 'Request Method: '.$_SERVER['REQUEST_METHOD'].'<br><br>';
+				$msg .= 'Current file Path: <b>'.$this->router->currentPath().'</b><br>';
+				$msg .= 'File Exception: '.$e->getFile().':'.$e->getLine().'<br><br>';
+				$msg .= 'Trace: <br>'.$e->getTraceAsString().'<br>';
 				$msg .= '</pre>';
 
 				exit($msg);
@@ -140,7 +140,7 @@ class Loader extends Core {
 	 */
 	public function __call($name, $arguments) {
 		foreach ($this->charged as $n => $detail)
-			if(strstr($name, $detail['getter']))
+			if (strstr($name, $detail['getter']))
 				return $this->{$detail['callback']}($name);
 		return null;
 	}
@@ -152,15 +152,15 @@ class Loader extends Core {
 	public function loadController($controller) {
 		$subControler = null;
 		if (strstr($controller, ',') !== false) {
-			$url = explode(',', $controller);
-			$urlCount = count($url) - 1;
+			$url          = explode(',', $controller);
+			$urlCount     = count($url) - 1;
 			$subControler = '';
 
 			for ($i = 0; $i < $urlCount; $i++) {
 				if (!defined('CODING_STYLE') or (defined('CODING_STYLE') and CODING_STYLE == true)) {
-					$subControler .= ucfirst($url[$i]) . DIRECTORY_SEPARATOR;
+					$subControler .= ucfirst($url[$i]).DIRECTORY_SEPARATOR;
 				} else {
-					$subControler .= $url[$i] . DIRECTORY_SEPARATOR;
+					$subControler .= $url[$i].DIRECTORY_SEPARATOR;
 				}
 			}
 
@@ -171,12 +171,12 @@ class Loader extends Core {
 			$controller = ucfirst($controller);
 		}
 
-		$controller = strtolower($controller);
+		$controller       = strtolower($controller);
 		$controller_class = '\modules\\'.$controller.'\mvc\controllers\\'.ucfirst($controller);
-		$controller_path = APP_DIR.'modules/'.$controller.'/mvc/controllers/'.ucfirst($controller).'.php';
+		$controller_path  = APP_DIR.'modules/'.$controller.'/mvc/controllers/'.ucfirst($controller).'.php';
 		try {
 			if (!is_file($controller_path)) {
-				throw new LoaderException('Can not open Controller ' . $controller . ' in: ' . $controller_path);
+				throw new LoaderException('Can not open Controller '.$controller.' in: '.$controller_path);
 			}
 
 			if (isset($this->baseClass->router->debug)) {
@@ -196,17 +196,17 @@ class Loader extends Core {
 			$msg = null;
 			if (ini_get('display_errors') == 'on') {
 				$msg .= '<pre>';
-				$msg .= 'Message: <b>' . $e->getMessage() . '</b><br><br>';
+				$msg .= 'Message: <b>'.$e->getMessage().'</b><br><br>';
 
-				$msg .= 'Accept: ' . $_SERVER['HTTP_ACCEPT'] . '<br>';
+				$msg .= 'Accept: '.$_SERVER['HTTP_ACCEPT'].'<br>';
 				if (isset($_SERVER['HTTP_REFERER'])) {
-					$msg .= 'Referer: ' . $_SERVER['HTTP_REFERER'] . '<br><br>';
+					$msg .= 'Referer: '.$_SERVER['HTTP_REFERER'].'<br><br>';
 				}
 
-				$msg .= 'Request Method: ' . $_SERVER['REQUEST_METHOD'] . '<br><br>';
-				$msg .= 'Current file Path: <b>' . $this->router->currentPath() . '</b><br>';
-				$msg .= 'File Exception: ' . $e->getFile() . ':' . $e->getLine() . '<br><br>';
-				$msg .= 'Trace: <br>' . $e->getTraceAsString() . '<br>';
+				$msg .= 'Request Method: '.$_SERVER['REQUEST_METHOD'].'<br><br>';
+				$msg .= 'Current file Path: <b>'.$this->router->currentPath().'</b><br>';
+				$msg .= 'File Exception: '.$e->getFile().':'.$e->getLine().'<br><br>';
+				$msg .= 'Trace: <br>'.$e->getTraceAsString().'<br>';
 				$msg .= '</pre>';
 
 				exit($msg);
@@ -267,7 +267,7 @@ class Loader extends Core {
 		if ($strict === true) {
 			// Check that there are not two capital letters
 			// next to each other.
-			$length = strlen($string);
+			$length          = strlen($string);
 			$lastCharWasCaps = $classFormat;
 
 			for ($i = 1; $i < $length; $i++) {

@@ -25,16 +25,15 @@ abstract class Controller extends Loader {
 	public function init() {
 		parent::init();
 		$this->loader = new Bootstrap();
-		$classe = basename(str_replace("\\", '/', get_class($this)));
+		$classe       = basename(str_replace("\\", '/', get_class($this)));
 		$this->setView(new SmartyView($classe));
 	}
 
 	/**
-     * initial function call working like __construct
-     */
-    public function start()
-    {
-      // For example you can check Auth 
-    }
+	 * initial function call working like __construct
+	 */
+	public function start() {
+		// For example you can check Auth
+	}
 
 }

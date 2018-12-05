@@ -15,17 +15,15 @@ namespace Dframe\custom;
  * @author Sławomir Kaleta <slaszka@gmail.com>
  */
 class Debug extends \Dframe\Debug {
-    private $headers = [];
+	private $headers = [];
 
-    public function addHeader($headers)
-    {
-        $this->headers = array_unique(array_merge($this->headers, $headers));
+	public function addHeader($headers) {
+		$this->headers = array_unique(array_merge($this->headers, $headers));
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getHeader()
-    {
-        return $this->headers;
-    }
+	public function getHeader() {
+		return $this->headers;
+	}
 }
