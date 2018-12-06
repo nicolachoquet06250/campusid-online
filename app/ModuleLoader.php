@@ -6,6 +6,7 @@ use Dframe\Messages;
 use Dframe\Session;
 use Dframe\Token;
 use tools\http;
+use tools\route_parser;
 
 require_once __DIR__.'/../core/Loader.php';
 
@@ -22,6 +23,7 @@ require_once __DIR__.'/../core/Loader.php';
  * @method Token get_service_token()
  *
  * @method http get_util_http()
+ * @method route_parser get_util_route_parser()
  */
 class ModuleLoader extends Loader {
 	protected $charged = [
@@ -85,6 +87,10 @@ class ModuleLoader extends Loader {
 		'http' => [
 			'class'  => http::class,
 			'source' => __DIR__.'/../tools/http.php',
+		],
+		'route_parser' => [
+			'class'  => route_parser::class,
+			'source' => __DIR__.'/../tools/route_parser.php',
 		],
 	];
 

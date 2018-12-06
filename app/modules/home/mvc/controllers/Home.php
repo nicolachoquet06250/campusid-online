@@ -8,6 +8,11 @@ use Dframe\custom\Router;
 use Dframe\custom\Router\Response;
 use Dframe\custom\View;
 
+/**
+ * Class Home
+ *
+ * @package modules\home\mvc\controllers
+ */
 class Home extends Controller {
 	/** @var Router $router */
 	public $router;
@@ -39,7 +44,7 @@ class Home extends Controller {
 		return $view->renderJSON(
 			[
 				'status' => 'success',
-				$users['data'],
+				'data' => $users['data'],
 			]
 		);
 	}

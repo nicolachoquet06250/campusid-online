@@ -11,7 +11,7 @@ $enable_systems = [
 			$vhosts .= '
 		<VirtualHost *:80>
 				#nom de domaine
-				ServerName campusid.local
+				ServerName api.campusid.local
 				
 				#logs d\'erreur
 				ErrorLog '.__DIR__.'/logs/error.log 
@@ -47,7 +47,7 @@ $enable_systems = [
 			$vhosts = '
 		<VirtualHost *:80>
 				#nom de domaine
-				ServerName campusid.local
+				ServerName api.campusid.local
 				
 				#logs d\'erreur
 				ErrorLog '.__DIR__.'/logs/error.log 
@@ -87,7 +87,7 @@ $enable_systems = [
 			$vhosts .= '
 		<VirtualHost *:80>
 				#nom de domaine
-				ServerName campusid.local
+				ServerName api.campusid.local
 				
 				#logs d\'erreur
 				ErrorLog '.__DIR__.'/logs/error.log 

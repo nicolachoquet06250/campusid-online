@@ -1,31 +1,26 @@
 <?php
 
-$routes = [
-	'documents/:pageId' => [
+$loader = new ModuleLoader();
+$global_routes = $loader->get_util_route_parser();
+$global_routes->add_route(
+	'documents/:pageId',
+	[
 		'documents/[pageId]/',
 		'task=page&action=show&pageId=[pageId]'
-	],
-
-	'error/:code' => [
+	]
+)->add_route(
+	'error/:code',
+	[
 		'error/[code]/',
 		'task=page&action=error&type=[code]',
 		'code' => '([0-9]+)',
 		'args' => [
 			'code' => '[code]'
 		]
-	],
-
-	':task/:action' => [
-		'[task]/[action]/[params]',
-		'task=[task]&action=[action]',
-		'params'  => '(.*)',
-		'_params' => [
-			'[name]/[value]/',
-			'[name]=[value]'
-		]
-	],
-
-	'default' => [
+	]
+)->add_route(
+	':task/:action',
+	[
 		'[task]/[action]/[params]',
 		'task=[task]&action=[action]',
 		'params'  => '(.*)',
@@ -34,14 +29,25 @@ $routes = [
 			'[name]=[value]'
 		]
 	]
-];
+)->add_route(
+	'default',
+	[
+		'[task]/[action]/[params]',
+		'task=[task]&action=[action]',
+		'params'  => '(.*)',
+		'_params' => [
+			'[name]/[value]/',
+			'[name]=[value]'
+		]
+	]
+);
 
 $dir = opendir(__DIR__.'/../modules');
 while (($module = readdir($dir)) !== false) {
 	$routes_path = realpath(__DIR__.'/../modules/'.$module.'/router.php');
 	if($routes_path && file_exists($routes_path)) {
-		$_routes = include $routes_path;
-		$routes = array_merge($routes, $_routes);
+		$routes = include $routes_path;
+		$global_routes->add_routes($routes);
 	}
 }
 
@@ -61,5 +67,5 @@ return [
 		'cacheUrl'         => HTTP_HOST.'/',
 	],
 
-	'routes' => $routes,
+	'routes' => $global_routes->get_routes(),
 ];
