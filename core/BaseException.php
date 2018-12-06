@@ -8,6 +8,7 @@
  */
 
 namespace Dframe\custom;
+require_once __DIR__.'/../vendor/dframe/dframe/src/BaseException.php';
 /**
  * BaseException Class.
  *

@@ -1,6 +1,7 @@
 <?php
 
 namespace Dframe\custom;
+require_once __DIR__.'/../vendor/dframe/dframe/src/Router.php';
 
 use Dframe\Router\Response;
 

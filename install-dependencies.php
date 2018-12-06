@@ -1,7 +1,6 @@
 <?php
 
 $dependencies = [
-	'dependencies/logger' => 'https://github.com/nicolachoquet06250/mvc_framework_logger.git',
 	'dependencies/queues' => 'https://github.com/nicolachoquet06250/mvc_framework_queues.git',
 ];
 
