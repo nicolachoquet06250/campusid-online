@@ -22,6 +22,7 @@ trait cmd {
 	public function run($callback = null) {
 		$this->before_run();
 		$method = $this->command->get_command_method();
+		var_dump($method);
 		if(in_array($method, get_class_methods(get_class($this)))) {
 			$this->$method($callback);
 		}

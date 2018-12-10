@@ -4,6 +4,7 @@
 use Dframe\custom\Command;
 
 require_once __DIR__.'/core/autoload.php';
+define('APP_DIR', __DIR__.'/app');
 
 try {
 	Command::build(
