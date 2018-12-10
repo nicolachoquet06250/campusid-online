@@ -81,7 +81,6 @@ class make {
 			$this->command->get_logger()->log($log);
 		}
 		$this->command->get_logger()->send();
-		var_dump($this->command->get_param('host'));
 	}
 
 	/**

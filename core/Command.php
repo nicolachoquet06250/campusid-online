@@ -14,12 +14,19 @@ class Command {
 	 * @param array $args
 	 */
 	protected function __construct(array $args) {
-		$this->command = $args[0];
-		$this->command_method = explode(':', $this->command)[1];
-		$this->params = self::clean_args(
-			self::clean_args($args)
-		);
-		$this->logger = new Logger\Logger();
+		if(!empty($args)) {
+			$this->command        = $args[0];
+			$this->command_method = explode(':', $this->command)[1];
+			$this->params         = self::clean_args(
+				self::clean_args($args)
+			);
+		}
+		else {
+			$this->command = 'help';
+			$this->command_method = 'run';
+			$this->params = [];
+		}
+		$this->logger         = new Logger\Logger();
 		$this->build_params();
 	}
 
@@ -67,7 +74,7 @@ class Command {
 	 * @param array $args
 	 * @return Command
 	 */
-	public static function build(array $args) {
+	public static function build(array $args = []) {
 		return new Command($args);
 	}
 

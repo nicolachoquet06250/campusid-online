@@ -31,6 +31,7 @@ class Home extends Controller {
 
 	/**
 	 * @throws View\Exceptions\ViewException
+	 * @throws \Exception
 	 */
 	public function index() {
 		/**
@@ -41,6 +42,7 @@ class Home extends Controller {
 		/** @var \modules\home\mvc\models\Home $example_model */
 		$example_model = $this->loader->get_model_home();
 		$users         = $example_model->example();
+		$this->loader->get_util_command()->get()->run();
 		return $view->renderJSON(
 			[
 				'status' => 'success',

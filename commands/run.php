@@ -32,7 +32,7 @@ class run {
 		$port = !is_null($this->command->get_param('port')) ? $this->command->get_param('port') : 8083;
 		$host = !is_null($this->command->get_param('host')) ? $this->command->get_param('host') : 'localhost';
 		echo "Le serveur est accessible sur l'adresse http://".$host.':'.$port."\n";
-		exec('php -S '.$host.':'.$port.' -t '.APP_DIR.'/../web/ server.php', $out);
+		exec('php -S '.$host.':'.$port.' -t '.APP_DIR.'/../web/ '.APP_DIR.'/../web/server.php', $out);
 		echo implode("\n", $out);
 	}
 }

@@ -1,18 +1,28 @@
 <?php
 
 $loader = new ModuleLoader();
+
+$modules = [];
+$dir = opendir(__DIR__.'/../modules');
+while (($module = readdir($dir)) !== false) {
+	$routes_path = realpath(__DIR__.'/../modules/'.$module.'/router.php');
+	if($routes_path && file_exists($routes_path)) {
+		$modules[$module] = $routes_path;
+	}
+}
+
 $global_routes = $loader->get_util_route_parser();
 $global_routes->add_route(
 	'documents/:pageId',
 	[
 		'documents/[pageId]/',
-		'task=page&action=show&pageId=[pageId]'
+		'task=home&action=show&pageId=[pageId]'
 	]
 )->add_route(
 	'error/:code',
 	[
 		'error/[code]/',
-		'task=page&action=error&type=[code]',
+		'task=home&action=error&type=[code]',
 		'code' => '([0-9]+)',
 		'args' => [
 			'code' => '[code]'
@@ -42,14 +52,7 @@ $global_routes->add_route(
 	]
 );
 
-$dir = opendir(__DIR__.'/../modules');
-while (($module = readdir($dir)) !== false) {
-	$routes_path = realpath(__DIR__.'/../modules/'.$module.'/router.php');
-	if($routes_path && file_exists($routes_path)) {
-		$routes = include $routes_path;
-		$global_routes->add_routes($routes);
-	}
-}
+foreach ($modules as $module => $module_path) require_once $module_path;
 
 return [
 	'https'           => false,

@@ -7,7 +7,6 @@ return [
 			$hosts_path = 'C:\Windows\System32\drivers\etc\hosts';
 
 			$vhosts = file_get_contents($vhosts_path);
-			var_dump(strstr($vhosts, 'campusid.local'));
 			if(!strstr($vhosts, 'campusid.local')) {
 				$vhosts .= '
 		<VirtualHost *:80>
