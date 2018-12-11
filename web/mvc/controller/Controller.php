@@ -22,7 +22,7 @@ abstract class Controller extends Loader {
 	/**
 	 * @throws \Dframe\Loader\Exceptions\LoaderException
 	 */
-	public function init() {
+	public function init(): void {
 		parent::init();
 		$this->loader = new Bootstrap();
 		$classe       = basename(str_replace("\\", '/', get_class($this)));
@@ -30,9 +30,9 @@ abstract class Controller extends Loader {
 	}
 
 	/**
-	 * initial function call working like __construct
+	 * initial function call working like construct
 	 */
-	public function start() {
+	public function start(): void {
 		// For example you can check Auth
 	}
 
