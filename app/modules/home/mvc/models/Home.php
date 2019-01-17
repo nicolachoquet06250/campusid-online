@@ -3,6 +3,7 @@
 namespace modules\home\mvc\models;
 
 
+use Dframe\Database\Database;
 use Model\Model;
 
 class Home extends Model {

@@ -14,8 +14,10 @@ require_once __DIR__.'/../core/Loader.php';
  * Class ModuleLoader
  *
  * @method \modules\home\mvc\models\Home get_model_home()
+ * @method \modules\documentation\mvc\models\Documentation get_model_documentation()
  *
  * @method \modules\home\mvc\controllers\Home get_controller_home()
+ * @method \modules\documentation\mvc\controllers\Documentation get_controller_documentation()
  *
  * @method Database get_service_database()
  * @method Session get_service_session()
@@ -101,6 +103,18 @@ class ModuleLoader extends Loader {
 	 */
 	public function __construct() {
 		$this->load_services();
+		if(!isset($this->controllers['documentation']) && class_exists(\modules\documentation\mvc\controllers\Documentation::class)) {
+			$this->controllers['documentation'] = [
+				'class' => \modules\documentation\mvc\controllers\Documentation::class,
+				'source' => __DIR__.'/modules/documentation/mvc/controllers/Documentation.php',
+			];
+		}
+		if(!isset($this->models['documentation']) && class_exists(\modules\documentation\mvc\models\Documentation::class)) {
+			$this->models['documentation'] = [
+				'class' => \modules\documentation\mvc\models\Documentation::class,
+				'source' => __DIR__.'/modules/documentation/mvc/models/Documentation.php',
+			];
+		}
 	}
 
 	protected function load_services() {

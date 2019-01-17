@@ -14,13 +14,20 @@ class Command {
 	 * @param array $args
 	 */
 	protected function __construct(array $args) {
-		$this->command = $args[0];
-		$this->command_method = explode(':', $this->command)[1];
-		$this->params = self::clean_args(
-			self::clean_args($args)
-		);
-		$this->logger = new Logger\Logger();
-		$this->build_params();
+		if(count($args) === 0 || (count($args) === 1 && $args[0] === 'help')) {
+			$this->command 		  = 'help';
+			$this->command_method = 'index';
+			$this->params		  = [];
+		}
+		else {
+			$this->command        = $args[0];
+			$this->command_method = explode(':', $this->command)[1];
+			$this->params         = self::clean_args(
+				self::clean_args($args)
+			);
+			$this->logger         = new Logger\Logger();
+			$this->build_params();
+		}
 	}
 
 	/**

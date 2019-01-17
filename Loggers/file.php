@@ -15,7 +15,7 @@ class file {
 		$this->file = $options['file'];
 	}
 
-	public function log($msg) {
+	public function log($msg, $params = []) {
 		$this->messages[] = $msg;
 	}
 

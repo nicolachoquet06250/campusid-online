@@ -7,20 +7,21 @@ class make {
 	use cmd;
 
 	protected function before_run() {
-		$this->command->get_logger()->add_loggers(
-			[
-				'console' => [],
-				'file' => [
-					'file' => 'hello',
-				],
-				'mail' => [
-					'to' => [
-						'nicolachoquet06250@gmail.com',
-						'nicolas.choquet@campusid.eu',
-					]
-				]
-			]
-		);
+		$this->command->get_logger()
+					  ->add_logger('console')
+					  ->add_loggers(
+					  	[
+					  		'file' => [
+					  			'file' => 'hello',
+							],
+							'mail' => [
+								'to' => [
+									'nicolachoquet06250@gmail.com',
+									'nicolas.choquet@campusid.eu',
+								]
+							]
+						]
+					  );
 	}
 
 	protected function after_run() {
@@ -31,52 +32,25 @@ class make {
 	 * @throws \Exception
 	 */
 	public function build() {
-		$logs = [
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-			'coucou',
-			'c\'est moi !!',
-			'tu es là ?',
-			'Je t\'attend',
-		];
+		$logs = [];
+		foreach ($this->command->get_params() as $param => $value) {
+			$logs[] = $param.' = '.$value;
+		}
 		foreach ($logs as $log) {
 			$this->command->get_logger()->log($log);
 		}
 		$this->command->get_logger()->send();
-		var_dump($this->command->get_param('host'));
+	}
+
+	/**
+	 * @throws \Exception
+	 */
+	public function send_mail() {
+		$this->command->get_logger()->remove_logger('console')->remove_logger('file');
+		$this->command->get_logger()->log($this->command->get_param('content'), [
+			'object' => 'un nouvel objet pour ce mail !',
+			'is_log' => false,
+		]);
+		$this->command->get_logger()->send();
 	}
 }

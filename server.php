@@ -22,11 +22,3 @@ if ($uri !== '/' and file_exists(__DIR__ . '/web' . $uri)) {
 }
 
 require_once __DIR__ . '/web/index.php';
-
-
-/*
- * Example de reflexion avec une classe
- *
- * $ref_class = new ReflectionClass(stdClass::class);
- * $ref_class->getDocComment();
- */

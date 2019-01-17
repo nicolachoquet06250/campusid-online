@@ -35,8 +35,10 @@ class Logger {
 	 * @return Logger
 	 */
 	public function remove_logger($type) {
-		if (isset($this->logs_type[$type]))
+		if (isset($this->logs_type[$type])) {
 			unset($this->logs_type[$type]);
+			unset($this->instanciate_loggers[$type]);
+		}
 		return $this;
 	}
 
@@ -78,9 +80,10 @@ class Logger {
 		return $this;
 	}
 
-	public function log($msg = '') {
+	public function log($msg = '', $params = []) {
+		/** @var log $logger */
 		foreach ($this->instanciate_loggers as $logger) {
-			$logger->log($msg);
+			$logger->log($msg, $params);
 		}
 	}
 

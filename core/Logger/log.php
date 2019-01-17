@@ -26,6 +26,6 @@ trait log {
 	protected function get_complete_domain() {
 		return $this->get_user_ip().($this->get_port() === '80' || $this->get_port() === '' ? '' : ':'.$this->get_port()).' ';
 	}
-	abstract public function log($msg);
+	abstract public function log($msg, $params = []);
 	abstract public function send();
 }

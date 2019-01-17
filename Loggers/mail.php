@@ -18,6 +18,7 @@ class mail {
 	private $to, $from_email, $from_name, $object, $charset, $mailer;
 	protected                             $messages = [];
 	private $default_charset = 'UTF-8';
+	private $is_log = true;
 
 	/**
 	 * mail constructor.
@@ -53,7 +54,18 @@ class mail {
 		$this->mailer->Subject = $this->object;
 	}
 
-	public function log($msg) {
+	/**
+	 * @param $msg
+	 * @param array $params
+	 * @throws Exception
+	 */
+	public function log($msg, $params = []) {
+		if(!empty($params)) {
+			foreach ($params as $param => $value) {
+				$this->$param = $value;
+			}
+			$this->set_mailer_infos();
+		}
 		$this->messages[] = $msg;
 	}
 
@@ -64,7 +76,7 @@ class mail {
 	public function send() {
 		$messages = '';
 		foreach ($this->messages as $msg) {
-			$messages .= '<b>'.$this->get_date_text_format().'</b>'.$this->get_complete_domain().'=> '.$msg.'<br>';
+			$messages .= ($this->is_log ? '<b>'.$this->get_date_text_format().'</b>'.$this->get_complete_domain().'=> ' : '').$msg.'<br>';
 		}
 		$this->mailer->msgHTML($messages);
 		if (!$this->mailer->send()) throw new \Exception('Mailer Error: '.$this->mailer->ErrorInfo."\n");

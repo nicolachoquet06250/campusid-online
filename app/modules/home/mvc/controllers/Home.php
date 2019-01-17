@@ -3,6 +3,7 @@
 namespace modules\home\mvc\controllers;
 
 use Controller\Controller;
+use Dframe\custom\Command;
 use Dframe\custom\Config;
 use Dframe\custom\Router;
 use Dframe\custom\Router\Response;
@@ -31,22 +32,35 @@ class Home extends Controller {
 
 	/**
 	 * @throws View\Exceptions\ViewException
+	 * @throws \Exception
 	 */
 	public function index() {
-		/**
-		 * @var View $view
-		 */
+		/** @var View $view */
 		$view = $this->loadView('Index');
 		$view->assign('contents', 'Example assign');
 		/** @var \modules\home\mvc\models\Home $example_model */
 		$example_model = $this->loader->get_model_home();
 		$users         = $example_model->example();
+
 		return $view->renderJSON(
 			[
 				'status' => 'success',
 				'data' => $users['data'],
 			]
 		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function toto() {
+		/** @var View $view */
+		$view = $this->loadView('Index');
+		return $view->renderJSON([
+			'lets',
+			'go',
+			'!!',
+		]);
 	}
 
 

@@ -17,7 +17,7 @@ class route_parser {
 	 */
 	public function parse_module_routes($module = self::DEFAULT_MODULE) {
 		$complete_controller_path = $this->modules_base_path.'/'.$module.'/mvc/controllers/'.ucfirst($module).'.php';
-		$class = '\modules\home\mvc\controllers\\'.ucfirst($module);
+		$class = '\modules\\'.$module.'\mvc\controllers\\'.ucfirst($module);
 		$routes = [];
 		if(file_exists($complete_controller_path)) {
 			$complete_controller_path = realpath($complete_controller_path);
