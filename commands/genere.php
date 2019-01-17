@@ -124,6 +124,11 @@ class ModuleLoader extends \ModuleLoader {
 }
 ');
 
+		file_put_contents(__DIR__.'/../app/View/templates/documentation.html.php', '{include file="header.html.php"}
+	{$content}
+{include file="footer.html.php"}
+');
+
 		$this->callback = self::class.'::callback';
 	}
 
