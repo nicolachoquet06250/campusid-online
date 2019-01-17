@@ -1,13 +1,15 @@
 <?php
 namespace commands;
 
+use Dframe\custom\Config;
 use Dframe\custom\traits\cmd;
+use Exception;
 
 class make {
 	use cmd;
 
 	protected function before_run() {
-		$this->command->get_logger()
+		if($this->command->get_command_method() === 'build') {$this->command->get_logger()
 					  ->add_logger('console')
 					  ->add_loggers(
 					  	[
@@ -21,7 +23,7 @@ class make {
 								]
 							]
 						]
-					  );
+					  );}
 	}
 
 	protected function after_run() {

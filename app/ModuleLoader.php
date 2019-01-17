@@ -26,6 +26,7 @@ require_once __DIR__.'/../core/Loader.php';
  *
  * @method http get_util_http()
  * @method route_parser get_util_route_parser()
+ * @method tools\commands get_util_command()
  */
 class ModuleLoader extends Loader {
 	protected $charged = [
@@ -93,6 +94,10 @@ class ModuleLoader extends Loader {
 		'route_parser' => [
 			'class'  => route_parser::class,
 			'source' => __DIR__.'/../tools/route_parser.php',
+		],
+		'command' => [
+			'class'  => \tools\commands::class,
+			'source' => __DIR__.'/../tools/commands.php',
 		],
 	];
 

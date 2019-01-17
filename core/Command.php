@@ -50,8 +50,7 @@ class Command {
 	 * @throws \Exception
 	 */
 	public function get_param($key) {
-		if(isset($this->params[$key])) return $this->params[$key];
-		else throw new Exception('Parameter `'.$key.'` not found in `'.$this->get_command_method().'` method !');
+		return (isset($this->params[$key])) ? $this->params[$key] : null;
 	}
 
 	/**
@@ -75,7 +74,7 @@ class Command {
 	 * @param array $args
 	 * @return Command
 	 */
-	public static function build(array $args) {
+	public static function build(array $args = []) {
 		return new Command($args);
 	}
 
@@ -99,7 +98,8 @@ class Command {
 	public function run($callback = null): void {
 		$command_class = explode(':', $this->command)[0];
 		if(file_exists(__DIR__.'/../commands/'.$command_class.'.php')) {
-			require_once __DIR__.'/../commands/'.$command_class.'.php';
+			$path = __DIR__.'/../commands/'.$command_class.'.php';
+			require_once $path;
 			$complete_command_class = '\commands\\'.$command_class;
 			/** @var cmd $cmd */
 			$cmd = new $complete_command_class($this);
